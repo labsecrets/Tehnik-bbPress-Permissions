@@ -85,23 +85,14 @@ function tehnik_bpp_get_permitted_subforums($sub_forums = '') {
 
 /**
  * Check if the user is allowed to view the content (forum/topic/post)
- * Show a 404 error if the user does not have a permission to access the content
+ * Redirect to WooCommerce login page if not logged-in or to paid-subcriber info page if not permitted
  */
-function tehnik_bpp_enforce_permissions() {
-    // Bail if not viewing a bbPress item
-    if (!is_bbpress())
-        return;
-
-    // Bail if not viewing a single item or if user has caps
-    if (!is_singular() || bbp_is_user_keymaster() || current_user_can('read_hidden_forums'))
-        return;
-
     if (!tehnik_bpp_can_user_view_post()) {
         if (!is_user_logged_in()) {
-            auth_redirect();
+            header('Location: http://1wd.tv/my-account');
         }
         else {
-            bbp_set_404();
+            header('Location: http://1wd.tv/paid-subscribers/');
         }
     }
 }
